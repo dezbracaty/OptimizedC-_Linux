@@ -6,6 +6,8 @@
 
 #ifndef OPTIMIZEDC__LINUX_BASETIMER_H
 #define OPTIMIZEDC__LINUX_BASETIMER_H
+
+//this timer based on clock()
 class baseTimerClock{
 public:
     // tick type
@@ -46,6 +48,8 @@ private:
     tick_t m_start;
 };
 
+
+//this Timer based on getTimeofDay()
 class baseTimerGetTimeOfDay {
 public:
     //	clears the timer
@@ -76,5 +80,40 @@ private:
     timeval m_start;
 };
 
+#include <chrono>
+//this Timer based on std::chrono
+using namespace std::chrono;
+class baseTimerChrono{
+public:
 
+    // 清除计时器
+    baseTimerChrono() : m_start(system_clock::time_point::min()) { };
+
+    // 清除计时器
+    void Clear() {
+        m_start = system_clock::time_point::min();
+    }
+
+    // 如果计时器正在计时，则返回true
+    bool isStarted() const {
+        return (m_start.time_since_epoch() != system_clock::duration(0));
+    }
+
+    // 启动计时器
+    void Start() {
+        m_start = system_clock::now();
+    }
+
+    // 得到自计时开始后的毫秒值
+    unsigned long GetMs() {
+        if (isStarted()) {
+            system_clock::duration diff;
+            diff = system_clock::now() - m_start;
+            return (unsigned)(duration_cast<milliseconds>(diff).count());
+        }
+        return 0;
+    }
+private:
+    system_clock::time_point m_start;
+};
 #endif //OPTIMIZEDC__LINUX_BASETIMER_H

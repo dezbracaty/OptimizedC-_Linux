@@ -141,7 +141,7 @@ typename basic_StopWatch<T>::tick_t basic_StopWatch<T>::Stop(const char *event_n
         if (event_name && event_name[0]) {
             if (m_activity)
                 m_log << m_activity << ": ";
-            m_log << event_name << " Take "<<m_lap << "\tTicks and Take "  << (float) BaseTimer::GetMs(m_lap) << "\tmS" << std::endl << std::flush;
+            m_log << event_name << "\nTotal take "<<m_lap << "  ticks and takes "  << BaseTimer::GetMs(m_lap) << "  mS" << std::endl << std::flush;
         }
     }
     BaseTimer::clear();
